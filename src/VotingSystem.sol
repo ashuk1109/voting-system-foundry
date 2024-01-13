@@ -8,6 +8,12 @@ interface VotingSystemEvents {
     event VoteCast(address indexed voterAddress, uint256 candidateId);
 }
 
+/**
+ * @title VotingSystem
+ * @author ashuk1109
+ *
+ * Decentralized Voting System for complete transparency
+ */
 contract VotingSystem is VotingSystemEvents {
     /** Errors */
     error VotingSystem__OnlyOwner();
@@ -16,6 +22,7 @@ contract VotingSystem is VotingSystemEvents {
     error VotingSystem__VoteAlreadyCasted();
     error VotingSystem__InvalidCandidateId();
 
+    /** Type Declarations */
     struct Voter {
         bool isRegistered;
         bool hasVoted;
@@ -76,6 +83,12 @@ contract VotingSystem is VotingSystemEvents {
         s_id++;
     }
 
+    /**
+     * @dev Voter can cast vote only if :
+     * 1. Voter is registered.
+     * 2. Voter hasn't already voted.
+     * 3. Voter provides a valid candidate id for voting.
+     */
     function castVote(
         uint256 candidateId
     ) public onlyRegisteredVoter hasNotVoted {
@@ -90,6 +103,9 @@ contract VotingSystem is VotingSystemEvents {
         emit VoteCast(msg.sender, candidateId);
     }
 
+    /**
+     * @dev Get complete results of voting for each and every candidate publicly
+     */
     function getResults()
         public
         view
@@ -107,6 +123,9 @@ contract VotingSystem is VotingSystemEvents {
         return (candidateNames, voteCounts);
     }
 
+    /**
+     * @dev Get the winner of the voting, internally calls the getResults function
+     */
     function getWinner() public view returns (uint256) {
         (, uint256[] memory votes) = getResults();
         uint256 winnerId = 0;
