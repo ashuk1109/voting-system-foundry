@@ -7,18 +7,10 @@ The contract supports following features:
 - A voter can only vote once.
 - The voting process is completely transparent and any user can view the voting results.
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
-
-Foundry consists of:
-
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
-
-## Documentation
-
-https://book.getfoundry.sh/
+### About the Contract
+There are 2 main components of this contract: Voters and Candidates. Only the owner can add new candidates, but any user who wishes to be a voter and do so by calling the registerToVote function. The flow is pretty simple - users register to vote, owner adds candidates, voters cast their vote, the results can be publically seen using the getResults function. Though this contract doesn't implment the time thingy as this was not needed as per the guidlines for the assignment. <br> <br>
+Also, a key thing to note in the contract structure here is we use mapping Data structure for voters while an array for candidates, and this is by choice. Why?<br> As for voters we need efficiency, because in a voting system we often will have to check whether a partiulcar address has already voted, as we maintain a boolean to check this and a user can only vote once. So mappings provide O(1) lookup (if we had used arrays, the time complexity would have been O(n), as there is no predefined sequence of voters), hence, we use those for voters. <br>
+For the Candidates though, first thing is we have a limited number of candidates only. Next thing is when showing the results, we actually need to sequentially visit every candidate and get their vote count. Arrays in solidity are the go to choice for this kind of lookup.
 
 ## Usage
 
@@ -55,7 +47,7 @@ $ anvil
 ### Deploy
 
 ```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+$ forge script script/DeployVotingSystem.s.sol --rpc-url <your_rpc_url> --private-key <your_private_key>
 ```
 
 ### Cast
@@ -71,3 +63,6 @@ $ forge --help
 $ anvil --help
 $ cast --help
 ```
+## Documentation
+
+https://book.getfoundry.sh/
