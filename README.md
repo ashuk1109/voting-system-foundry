@@ -1,4 +1,11 @@
-## Foundry
+## Decentralized Voting System
+This smart contract represents a decentralized voting system written using solidity and test with the *Foundry Framework*.
+The contract supports following features:
+- Users can register to vote.
+- The owner of the contract can add candidate(s).
+- Only registered voters can cast their vote for a specific candidate.
+- A voter can only vote once.
+- The voting process is completely transparent and any user can view the voting results.
 
 **Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
 
